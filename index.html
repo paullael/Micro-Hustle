@@ -1,0 +1,2252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Micro Hustle</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6; /* Light gray background */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh; /* Full viewport height */
+            margin: 0;
+            padding: 20px; /* Add some padding around the content */
+            box-sizing: border;
+        }
+        .mobile-frame {
+            background-color: #ffffff; /* White background for the mobile frame */
+            border: 1px solid #e5e7eb; /* Light border */
+            border-radius: 24px; /* Rounded corners for the mobile frame */
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); /* Subtle shadow */
+            width: 100%;
+            max-width: 450px; /* Increased width */
+            min-height: 750px; /* Increased height */
+            display: flex;
+            flex-direction: column;
+            box-sizing: border-box;
+            overflow: hidden; /* Hide overflow for rounded corners */
+            position: relative; /* For absolute positioning of pages */
+            /* Hide scrollbar for Firefox */
+            scrollbar-width: none;
+            /* Hide scrollbar for IE and Edge */
+            -ms-overflow-style: none;
+        }
+        /* Hide scrollbar for Chrome, Safari and Opera */
+        .mobile-frame::-webkit-scrollbar {
+            display: none;
+        }
+
+        .page {
+            width: 100%;
+            height: 100%;
+            display: none; /* Hidden by default */
+            flex-direction: column;
+            padding: 32px 24px;
+            box-sizing: border-box;
+            position: absolute;
+            top: 0;
+            left: 0;
+            background-color: #ffffff; /* Ensure page background is white */
+            overflow-y: auto; /* Enable scrolling for content that exceeds height */
+            /* Hide scrollbar for Firefox */
+            scrollbar-width: none;
+            /* Hide scrollbar for IE and Edge */
+            -ms-overflow-style: none;
+        }
+        /* Hide scrollbar for Chrome, Safari and Opera */
+        .page::-webkit-scrollbar {
+            display: none;
+        }
+        .page.active {
+            display: flex; /* Show active page */
+        }
+
+        /* --- Login Page Styles --- */
+        #login-page {
+            align-items: center;
+            justify-content: center; /* Center content vertically */
+            text-align: center;
+        }
+        .logo-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+        .logo-circle {
+            background-color: #10B981; /* Green background for the logo circle */
+            border-radius: 9999px; /* Fully rounded */
+            padding: 16px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+        .logo-text {
+            font-size: 2rem; /* Large text for "Micro Hustle" */
+            font-weight: 700; /* Bold font */
+            color: #10B981; /* Green color for the text */
+            margin-left: 8px;
+        }
+        .login-heading {
+            font-size: 2.25rem; /* Larger heading for "LOGIN" */
+            font-weight: 700;
+            color: #374151; /* Dark gray text */
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+        .welcome-back {
+            font-size: 1.25rem; /* Welcome back text size */
+            color: #6b7280; /* Medium gray text */
+            margin-bottom: 32px;
+        }
+        .input-label {
+            align-self: flex-start; /* Align labels to the left */
+            font-size: 0.875rem; /* Small text for labels */
+            font-weight: 500;
+            color: #4b5563; /* Darker gray for labels */
+            margin-bottom: 8px;
+            width: 100%;
+        }
+        .input-field {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid #d1d5db; /* Light gray border */
+            border-radius: 8px; /* Rounded input fields */
+            font-size: 1rem;
+            color: #374151;
+            margin-bottom: 20px;
+            box-sizing: border-box; /* Include padding and border in the element's total width and height */
+        }
+        .input-field:focus {
+            outline: none;
+            border-color: #10B981; /* Green border on focus */
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2); /* Light green shadow on focus */
+        }
+        .login-button {
+            width: 100%;
+            padding: 14px 24px;
+            background-color: #10B981; /* Green button */
+            color: #ffffff; /* White text */
+            font-size: 1.125rem; /* Larger text for button */
+            font-weight: 600;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .login-button:hover {
+            background-color: #059669; /* Darker green on hover */
+        }
+        /* Simple SVG for the lightning bolt */
+        .lightning-icon {
+            width: 24px;
+            height: 24px;
+            fill: #ffffff; /* White fill for the lightning bolt */
+        }
+
+        /* --- Home Page Styles --- */
+        #home-page {
+            padding-bottom: 80px; /* Space for fixed bottom nav */
+        }
+        .home-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            margin-bottom: 40px;
+        }
+        .header-icons {
+            display: flex;
+            flex-direction: column; /* Arrange items vertically */
+            align-items: flex-end; /* Align icons to the right */
+            gap: 5px; /* Smaller gap for vertical stacking */
+        }
+        .profile-header-icon {
+            width: 32px;
+            height: 32px;
+            background-color: #d1d5db; /* Light gray for profile pic */
+            border-radius: 9999px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            overflow: hidden;
+        }
+        .profile-header-icon .fas {
+            font-size: 1.25rem;
+            color: #9ca3af; /* Medium gray icon */
+        }
+        .notification-bell-container {
+            position: relative;
+            display: flex; /* To correctly position badge relative to icon */
+        }
+        .app-icon-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); /* 3 columns */
+            gap: 20px; /* Space between icons */
+            width: 100%;
+            margin-top: 20px;
+        }
+        .app-icon {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            cursor: pointer;
+            padding: 10px;
+            border-radius: 12px;
+            transition: background-color 0.2s ease;
+        }
+        .app-icon:hover {
+            background-color: #f3f4f6;
+        }
+        .app-icon-circle {
+            width: 60px;
+            height: 60px;
+            background-color: #e0f7fa; /* Light blue background */
+            border-radius: 16px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 8px;
+            position: relative;
+        }
+        .app-icon-circle .fas {
+            font-size: 2rem;
+            color: #00bcd4; /* Cyan icon color */
+        }
+        .app-icon-label {
+            font-size: 0.875rem;
+            color: #374151;
+            font-weight: 500;
+        }
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: #ef4444; /* Red for notifications */
+            color: white;
+            border-radius: 9999px;
+            padding: 2px 8px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            border: 2px solid white;
+        }
+
+        /* --- Profile Page Styles --- */
+        #profile-page {
+            align-items: center;
+            padding-bottom: 80px; /* Space for fixed bottom nav */
+            background-color: #1a1a1a; /* Dark background for profile page */
+            color: #e0e0e0; /* Light gray text for profile page */
+        }
+        #profile-page .text-2xl,
+        #profile-page .username,
+        #profile-page .user-rating,
+        #profile-page .gig-title,
+        #profile-page .gig-status,
+        #profile-page .text-lg,
+        #profile-page .stat-label,
+        #profile-page .stat-value {
+            color: #e0e0e0; /* Ensure all text on profile page is light gray */
+        }
+        .profile-picture-container {
+            width: 120px;
+            height: 120px;
+            background-color: #333333; /* Darker gray for profile pic background */
+            border-radius: 9999px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 24px;
+            overflow: hidden;
+            border: 2px solid #555555; /* Slightly lighter border for contrast */
+        }
+        .profile-picture-container .fas {
+            font-size: 4rem;
+            color: #999999; /* Medium gray icon for the user placeholder */
+        }
+        .username {
+            font-size: 2.25rem; /* Larger font for name */
+            font-weight: 700;
+            margin-bottom: 24px; /* More space below name */
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            width: 100%;
+            text-align: center;
+            margin-bottom: 40px; /* Space below stats */
+        }
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .stat-label {
+            font-size: 0.875rem;
+            color: #a0a0a0; /* Lighter gray for labels */
+            margin-bottom: 4px;
+            text-transform: uppercase;
+            font-weight: 500;
+        }
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #e0e0e0; /* Light gray for values */
+        }
+        .star-rating .fas {
+            color: #FFD700; /* Gold color for stars */
+            font-size: 1.2rem;
+        }
+        .profile-button {
+            width: 100%;
+            padding: 14px 24px;
+            background-color: #333333; /* Dark gray button */
+            color: #e0e0e0; /* Light gray text */
+            font-size: 1rem;
+            font-weight: 600;
+            border: 1px solid #555555; /* Slightly lighter border */
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+            margin-bottom: 16px;
+        }
+        .profile-button:hover {
+            background-color: #555555;
+            border-color: #777777;
+        }
+        /* No logout button in new screenshot, but keeping style in case needed later */
+        .profile-button.logout {
+            background-color: #ef4444; /* Red for logout */
+            color: #ffffff;
+            border: none;
+        }
+        .profile-button.logout:hover {
+            background-color: #dc2626;
+        }
+        .gig-list-item {
+            width: 100%;
+            background-color: #222222; /* Darker gray for gig items */
+            border: 1px solid #444444; /* Darker border */
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        }
+        .gig-title {
+            font-weight: 600;
+        }
+        .gig-status {
+            font-size: 0.875rem;
+            color: #999999; /* Lighter gray for status */
+        }
+
+        /* --- Search Page Styles (Task Feed) --- */
+        #search-page {
+            padding-bottom: 80px; /* Space for fixed bottom nav */
+            background-color: #f3f4f6; /* Light gray background */
+        }
+        .search-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+        .search-header .logo-container {
+            flex-direction: row; /* Keep logo and text in a row */
+            margin-bottom: 0;
+        }
+        .search-header .logo-circle {
+            padding: 8px;
+            margin-bottom: 0;
+            background-color: #10B981; /* Green background for logo */
+        }
+        .search-header .logo-text {
+            color: #10B981; /* Green text for logo */
+            font-size: 1.25rem; /* Smaller text for header logo */
+            margin-left: 8px;
+        }
+        .search-header .header-icons {
+            flex-direction: row; /* Keep icons in a row */
+            gap: 15px;
+        }
+        .welcome-message {
+            font-size: 1.125rem;
+            color: #4b5563;
+            margin-bottom: 30px;
+        }
+        .hustle-feed-section {
+            margin-bottom: 15px; /* Reduced spacing */
+        }
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 10px; /* Reduced spacing */
+            display: flex;
+            align-items: center;
+        }
+        .section-title .fas {
+            margin-right: 8px;
+            color: #10B981; /* Green icon */
+        }
+        .task-card {
+            background-color: #ffffff;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 10px; /* Reduced spacing */
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            border: 1px solid #e5e7eb;
+        }
+        .task-detail-line {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+            color: #4b5563;
+            font-size: 1rem;
+        }
+        .task-detail-line .fas {
+            margin-right: 8px;
+            color: #6b7280;
+        }
+        .task-detail-line strong {
+            color: #10B981; /* Green for values like price */
+            font-weight: 600;
+        }
+        .view-details-button {
+            background-color: #374151; /* Dark gray button */
+            color: #ffffff;
+            padding: 10px 20px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            float: right; /* Align to right */
+            margin-top: 10px;
+            transition: background-color 0.3s ease;
+        }
+        .view-details-button:hover {
+            background-color: #1f2937; /* Even darker gray on hover */
+        }
+
+        /* --- Post Page Styles --- */
+        #post-gig-page {
+            padding-bottom: 80px; /* Space for fixed bottom nav */
+            background-color: #f3f4f6; /* Light gray background */
+            align-items: center;
+        }
+        .post-header {
+            width: 100%;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .post-header h2 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: #374151;
+        }
+        .post-form-group {
+            width: 100%;
+            margin-bottom: 25px;
+        }
+        .post-form-label {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #4b5563;
+            margin-bottom: 10px;
+            display: block; /* Make label a block element */
+        }
+        .post-form-input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 1rem;
+            color: #374151;
+            box-sizing: border-box;
+        }
+        .post-form-textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 1rem;
+            color: #374151;
+            min-height: 120px; /* Larger height for description */
+            resize: vertical; /* Allow vertical resizing */
+            box-sizing: border-box;
+        }
+        .post-form-input:focus,
+        .post-form-textarea:focus {
+            outline: none;
+            border-color: #10B981;
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+        }
+        .post-submit-button {
+            width: 100%;
+            padding: 14px 24px;
+            background-color: #10B981; /* Green button */
+            color: #ffffff;
+            font-size: 1.125rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 20px;
+        }
+        .post-submit-button:hover {
+            background-color: #059669; /* Darker green on hover */
+        }
+        .post-message { /* Style for the success/error message */
+            margin-top: 15px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            text-align: center;
+            padding: 10px;
+            border-radius: 8px;
+            display: none; /* Hidden by default */
+        }
+        .post-message.success {
+            background-color: #d1fae5; /* Light green */
+            color: #065f46; /* Dark green text */
+        }
+        .post-message.error {
+            background-color: #fee2e2; /* Light red */
+            color: #991b1b; /* Dark red text */
+        }
+
+        /* --- Tasks Page Styles --- */
+        #tasks-page {
+            align-items: center;
+            justify-content: center; /* Center content vertically */
+            text-align: center;
+            padding-bottom: 80px; /* Space for fixed bottom nav */
+            background-color: #f3f4f6; /* Light gray background */
+        }
+        .tasks-header {
+            width: 100%;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .tasks-header h2 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: #374151;
+        }
+        .no-tasks-icon {
+            font-size: 6rem; /* Large icon size */
+            color: #9ca3af; /* Medium gray icon color */
+            margin-bottom: 20px;
+        }
+        .no-tasks-message {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 10px;
+        }
+        .no-tasks-subtext {
+            font-size: 1rem;
+            color: #6b7280;
+        }
+
+        /* --- Messages Page Styles --- */
+        #messages-page {
+            padding-bottom: 80px;
+            background-color: #f3f4f6;
+        }
+        .messages-header {
+            width: 100%;
+            text-align: center;
+            margin-bottom: 20px; /* Reduced margin for header */
+        }
+        .messages-header h2 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: #374151;
+        }
+        .conversation-list {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 10px; /* Space between conversation items */
+        }
+        .conversation-item {
+            background-color: #ffffff;
+            border-radius: 12px;
+            padding: 15px 20px;
+            box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.05), 0 1px 2px -1px rgba(0, 0, 0, 0.03);
+            border: 1px solid #e5e7eb;
+            display: flex;
+            align-items: center; /* Align items to the center vertically */
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+        .conversation-item:hover {
+            background-color: #f9fafb;
+        }
+        .conversation-avatar {
+            width: 48px;
+            height: 48px;
+            background-color: #d1d5db; /* Light gray for avatar background */
+            border-radius: 9999px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 15px;
+            overflow: hidden;
+        }
+        .conversation-avatar .fas {
+            font-size: 1.8rem;
+            color: #9ca3af; /* Medium gray icon */
+        }
+        .conversation-content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        .conversation-name {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 4px;
+        }
+        .conversation-snippet {
+            font-size: 0.9rem;
+            color: #6b7280;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            width: 100%; /* Ensure ellipsis works */
+        }
+        .conversation-timestamp {
+            font-size: 0.75rem;
+            color: #9ca3af;
+            margin-left: auto; /* Push timestamp to the right */
+            align-self: center; /* Changed to center for better vertical alignment */
+            flex-shrink: 0; /* Prevent shrinking */
+        }
+
+        /* --- Settings Page Styles --- */
+        #settings-page {
+            padding-top: 0; /* Remove top padding for full header */
+            padding-bottom: 80px;
+            background-color: #f3f4f6;
+            justify-content: flex-start; /* Align content to the top */
+        }
+        .settings-header { /* Reusing sub-page-header styles for consistency */
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            padding: 15px 20px;
+            background-color: #ffffff;
+            border-bottom: 1px solid #e5e7eb;
+            box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.05);
+            flex-shrink: 0;
+        }
+        .settings-header .back-button {
+            font-size: 1.5rem;
+            color: #6b7280;
+            cursor: pointer;
+            margin-right: 15px;
+        }
+        .settings-header h2 { /* Adjusted for the header title */
+            flex-grow: 1;
+            text-align: center;
+            font-size: 1.25rem; /* Smaller title for header */
+            font-weight: 600;
+            color: #374151;
+            line-height: 1.2;
+        }
+        .settings-list {
+            width: 100%;
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            border: 1px solid #e5e7eb;
+            overflow: hidden; /* For rounded corners on list items */
+            margin-top: 20px; /* Add some space below the header */
+        }
+        .settings-item {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            border-bottom: 1px solid #e5e7eb;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+        .settings-item:last-child {
+            border-bottom: none;
+        }
+        .settings-item:hover {
+            background-color: #f9fafb;
+        }
+        .settings-item .fas {
+            font-size: 1.25rem;
+            color: #6b7280;
+            margin-right: 15px;
+        }
+        .settings-item span {
+            font-size: 1rem;
+            color: #374151;
+            font-weight: 500;
+            flex-grow: 1; /* Take up remaining space */
+        }
+        .settings-item .fa-chevron-right {
+            color: #9ca3af;
+            font-size: 0.875rem;
+        }
+
+        /* --- Wallet Page Styles --- */
+        #wallet-page {
+            align-items: center;
+            padding-bottom: 80px;
+            background-color: #f3f4f6;
+        }
+        .wallet-header {
+            width: 100%;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .wallet-header h2 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: #374151;
+        }
+        .balance-card {
+            background-color: #10B981; /* Green background */
+            color: #ffffff;
+            border-radius: 12px;
+            padding: 30px 20px;
+            width: 100%;
+            text-align: center;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        .balance-label {
+            font-size: 1.125rem;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+        .balance-amount {
+            font-size: 3rem;
+            font-weight: 700;
+            line-height: 1;
+        }
+        .wallet-actions {
+            display: flex;
+            gap: 15px;
+            width: 100%;
+            margin-bottom: 30px;
+        }
+        .wallet-button {
+            flex: 1;
+            padding: 14px 10px;
+            background-color: #374151; /* Dark gray button */
+            color: #ffffff;
+            font-size: 1rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+        .wallet-button:hover {
+            background-color: #1f2937;
+        }
+        .wallet-button .fas {
+            font-size: 1.5rem;
+            margin-bottom: 8px;
+        }
+        .transaction-history-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 15px;
+            width: 100%;
+        }
+        .transaction-item {
+            background-color: #ffffff;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 10px;
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            border: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+        .transaction-details {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        .transaction-name {
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 4px;
+        }
+        .transaction-date {
+            font-size: 0.875rem;
+            color: #6b7280;
+        }
+        .transaction-amount {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #10B981; /* Green for positive, red for negative */
+        }
+        .transaction-amount.negative {
+            color: #ef4444; /* Red for negative transactions */
+        }
+
+        /* --- Chat Detail Page Styles --- */
+        #chat-detail-page {
+            padding-top: 0; /* Remove top padding for full header */
+            padding-bottom: 70px; /* Space for chat input */
+            padding-left: 0;
+            padding-right: 0;
+            justify-content: flex-start; /* Align content to the top */
+        }
+        .chat-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            padding: 15px 20px;
+            background-color: #ffffff;
+            border-bottom: 1px solid #e5e7eb;
+            box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.05);
+            flex-shrink: 0; /* Prevent header from shrinking */
+        }
+        .chat-header .back-button {
+            font-size: 1.5rem;
+            color: #6b7280;
+            cursor: pointer;
+            margin-right: 15px;
+        }
+        .chat-header-info {
+            flex-grow: 1;
+            text-align: center;
+        }
+        .chat-header-name {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #374151;
+            line-height: 1.2;
+        }
+        .chat-header-status {
+            font-size: 0.8rem;
+            color: #10B981; /* Green for online status */
+            font-weight: 500;
+        }
+        .chat-header .profile-icon {
+            font-size: 1.5rem;
+            color: #6b7280;
+            margin-left: 15px;
+        }
+        .chat-area {
+            flex-grow: 1; /* Take up remaining space */
+            padding: 20px 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px; /* Space between messages */
+            overflow-y: auto;
+            /* Hide scrollbar for Firefox */
+            scrollbar-width: none;
+            /* Hide scrollbar for IE and Edge */
+            -ms-overflow-style: none;
+        }
+        /* Hide scrollbar for Chrome, Safari and Opera */
+        .chat-area::-webkit-scrollbar {
+            display: none;
+        }
+
+        .message-bubble {
+            max-width: 80%;
+            padding: 10px 15px;
+            border-radius: 18px; /* More rounded corners for bubbles */
+            font-size: 0.95rem;
+            line-height: 1.4;
+            word-wrap: break-word; /* Break long words */
+        }
+        .incoming-message {
+            background-color: #e5e7eb; /* Light gray for incoming */
+            color: #374151;
+            align-self: flex-start; /* Align to left */
+            border-bottom-left-radius: 4px; /* Pointy corner */
+        }
+        .outgoing-message {
+            background-color: #10B981; /* Green for outgoing */
+            color: #ffffff;
+            align-self: flex-end; /* Align to right */
+            border-bottom-right-radius: 4px; /* Pointy corner */
+        }
+        .chat-timestamp-group {
+            font-size: 0.75rem;
+            color: #9ca3af;
+            text-align: center;
+            margin: 15px 0; /* Space above and below timestamp */
+            width: 100%;
+        }
+        .chat-input-container {
+            display: flex;
+            align-items: center;
+            padding: 10px 20px;
+            border-top: 1px solid #e5e7eb;
+            background-color: #ffffff;
+            flex-shrink: 0; /* Prevent input from shrinking */
+        }
+        .chat-input {
+            flex-grow: 1;
+            padding: 12px 15px;
+            border: 1px solid #d1d5db;
+            border-radius: 24px; /* Fully rounded input */
+            font-size: 1rem;
+            color: #374151;
+            margin-right: 10px;
+            box-sizing: border-box;
+        }
+        .chat-input:focus {
+            outline: none;
+            border-color: #10B981;
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+        }
+        .send-button {
+            background-color: #10B981; /* Green send button */
+            color: #ffffff;
+            width: 44px;
+            height: 44px;
+            border-radius: 9999px; /* Fully rounded */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .send-button:hover {
+            background-color: #059669; /* Darker green on hover */
+        }
+        .send-button .fas {
+            font-size: 1.2rem;
+        }
+
+        /* --- Job Detail Page Styles --- */
+        #job-detail-page {
+            padding-top: 0; /* Remove top padding for full header */
+            padding-bottom: 80px; /* Space for the fixed button */
+            padding-left: 0;
+            padding-right: 0;
+            justify-content: flex-start; /* Align content to the top */
+        }
+        .job-detail-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            padding: 15px 20px;
+            background-color: #ffffff;
+            border-bottom: 1px solid #e5e7eb;
+            box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.05);
+            flex-shrink: 0;
+        }
+        .job-detail-header .back-button {
+            font-size: 1.5rem;
+            color: #6b7280;
+            cursor: pointer;
+            margin-right: 15px;
+        }
+        .job-detail-header-info {
+            flex-grow: 1;
+            text-align: center;
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #374151;
+            line-height: 1.2;
+        }
+        .job-detail-header .profile-icon {
+            font-size: 1.5rem;
+            color: #6b7280;
+            margin-left: 15px;
+        }
+        .job-detail-content {
+            flex-grow: 1;
+            padding: 20px 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            overflow-y: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        .job-detail-content::-webkit-scrollbar {
+            display: none;
+        }
+        .job-detail-section {
+            background-color: #ffffff;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.05), 0 1px 2px -1px rgba(0, 0, 0, 0.03);
+            border: 1px solid #e5e7eb;
+        }
+        .job-detail-section-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+        .job-detail-section-title .fas {
+            margin-right: 8px;
+            color: #10B981;
+        }
+        .job-detail-text {
+            font-size: 0.95rem;
+            color: #4b5563;
+            line-height: 1.5;
+        }
+        .job-detail-price {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #10B981;
+            text-align: center;
+            margin-top: 10px;
+        }
+        .job-detail-map { /* New style for the map image */
+            width: 100%;
+            height: 150px; /* Fixed height for the map */
+            background-color: #e0e0e0; /* Placeholder background */
+            border-radius: 8px;
+            margin-top: 15px;
+            object-fit: cover; /* Ensure the image covers the area */
+            border: 1px solid #d1d5db;
+        }
+        .start-job-button-container {
+            width: 100%;
+            padding: 15px 24px;
+            background-color: #ffffff;
+            border-top: 1px solid #e5e7eb;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            box-sizing: border-box;
+            z-index: 10;
+        }
+        .start-job-button {
+            width: 100%;
+            padding: 16px 24px;
+            background-color: #10B981; /* Green button */
+            color: #ffffff;
+            font-size: 1.125rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .start-job-button:hover {
+            background-color: #059669; /* Darker green on hover */
+        }
+
+        /* --- Generic Sub-Page Styles (for Edit Profile, Payment Info, My Hustles) --- */
+        .sub-page-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            padding: 15px 20px;
+            background-color: #ffffff;
+            border-bottom: 1px solid #e5e7eb;
+            box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.05);
+            flex-shrink: 0;
+        }
+        .sub-page-header .back-button {
+            font-size: 1.5rem;
+            color: #6b7280;
+            cursor: pointer;
+            margin-right: 15px;
+        }
+        .sub-page-header-title {
+            flex-grow: 1;
+            text-align: center;
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #374151;
+            line-height: 1.2;
+        }
+        .sub-page-content {
+            flex-grow: 1;
+            padding: 20px 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            overflow-y: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        .sub-page-content::-webkit-scrollbar {
+            display: none;
+        }
+        .sub-page-section {
+            background-color: #ffffff;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.05), 0 1px 2px -1px rgba(0, 0, 0, 0.03);
+            border: 1px solid #e5e7eb;
+        }
+        .sub-page-section-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+        .sub-page-section-title .fas {
+            margin-right: 8px;
+            color: #10B981;
+        }
+        .sub-page-text { /* Added for generic text in sub-pages */
+            font-size: 0.95rem;
+            color: #4b5563;
+            line-height: 1.5;
+            margin-bottom: 10px;
+        }
+        .sub-page-form-group {
+            margin-bottom: 15px;
+        }
+        .sub-page-label {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #4b5563;
+            margin-bottom: 5px;
+            display: block;
+        }
+        .sub-page-input, .sub-page-textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            color: #374151;
+            box-sizing: border-box;
+        }
+        .sub-page-input:focus, .sub-page-textarea:focus {
+            outline: none;
+            border-color: #10B981;
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+        }
+        .sub-page-button {
+            width: 100%;
+            padding: 14px 24px;
+            background-color: #10B981;
+            color: #ffffff;
+            font-size: 1rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 20px;
+        }
+        .sub-page-button:hover {
+            background-color: #059669;
+        }
+        .payment-method-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            background-color: #f9fafb;
+        }
+        .payment-method-item .fas {
+            font-size: 1.5rem;
+            color: #6b7280;
+            margin-right: 10px;
+        }
+        .payment-method-details {
+            flex-grow: 1;
+            font-size: 0.95rem;
+            color: #374151;
+        }
+        .my-hustle-item {
+            background-color: #ffffff;
+            border-radius: 12px;
+            padding: 15px 20px;
+            box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e5e7eb;
+            margin-bottom: 10px;
+        }
+        .my-hustle-title {
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 5px;
+        }
+        .my-hustle-details {
+            font-size: 0.875rem;
+            color: #6b7280;
+        }
+
+
+        /* --- Bottom Navigation Bar --- */
+        .footer-nav {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            width: 100%;
+            height: 70px; /* Fixed height for nav bar */
+            background-color: #ffffff;
+            border-top: 1px solid #e5e7eb;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            padding: 0 10px; /* Add some horizontal padding */
+            box-sizing: border-box;
+            z-index: 10; /* Ensure it's above page content */
+        }
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            color: #6b7280; /* Gray icons */
+            font-size: 0.75rem;
+            transition: color 0.3s ease;
+        }
+        .nav-item .fas {
+            font-size: 1.5rem;
+            margin-bottom: 4px;
+        }
+        .nav-item.active {
+            color: #10B981; /* Active icon green */
+        }
+        .nav-item:hover {
+            color: #10B981; /* Green on hover */
+        }
+    </style>
+</head>
+<body>
+    <div class="mobile-frame">
+        <!-- Login Page -->
+        <div id="login-page" class="page active">
+            <div class="logo-container">
+                <div class="logo-circle">
+                    <svg class="lightning-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M11.25 2.25L1.5 12.75H10.5L9.75 21.75L22.5 11.25H13.5L14.25 2.25H11.25Z" />
+                    </svg>
+                </div>
+                <span class="logo-text">Micro Hustle</span>
+            </div>
+
+            <h1 class="login-heading">LOGIN</h1>
+            <p class="welcome-back">Welcome Back</p>
+
+            <label for="email" class="input-label">Email address:</label>
+            <input type="email" id="email" class="input-field" placeholder="your@email.com" required>
+
+            <label for="password" class="input-label">Password:</label>
+            <input type="password" id="password" class="input-field" placeholder="********" required>
+
+            <button id="login-button" class="login-button">LOGIN</button>
+        </div>
+
+        <!-- Home Page -->
+        <div id="home-page" class="page">
+            <div class="home-header">
+                <div class="flex items-center">
+                    <div class="logo-circle !p-2 !mb-0">
+                        <svg class="lightning-icon !w-6 !h-6" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M11.25 2.25L1.5 12.75H10.5L9.75 21.75L22.5 11.25H13.5L14.25 2.25H11.25Z" />
+                        </svg>
+                    </div>
+                    <span class="logo-text !text-xl !ml-2">Micro Hustle</span>
+                </div>
+                <div class="header-icons">
+                    <div class="profile-header-icon" id="header-profile-icon">
+                        <i class="fas fa-user-circle"></i>
+                    </div>
+                    <div class="notification-bell-container">
+                        <i class="fas fa-bell text-2xl text-gray-600"></i>
+                        <span class="notification-badge">3</span>
+                    </div>
+                </div>
+            </div>
+
+            <p class="text-xl font-semibold text-gray-700 mb-4">Welcome back!</p>
+            <p class="text-gray-500 mb-8">What would you like to do today?</p>
+
+            <div class="app-icon-grid">
+                <div class="app-icon" data-page="tasks">
+                    <div class="app-icon-circle bg-yellow-100">
+                        <i class="fas fa-clipboard-list text-yellow-500"></i>
+                    </div>
+                    <span class="app-icon-label">Tasks</span>
+                </div>
+                <div class="app-icon" data-page="wallet">
+                    <div class="app-icon-circle bg-green-100">
+                        <i class="fas fa-wallet text-green-500"></i>
+                    </div>
+                    <span class="app-icon-label">Wallet</span>
+                </div>
+                <div class="app-icon" data-page="messages">
+                    <div class="app-icon-circle bg-purple-100">
+                        <i class="fas fa-comments text-purple-500"></i>
+                    </div>
+                    <span class="app-icon-label">Messages</span>
+                </div>
+                <div class="app-icon" data-page="create-task">
+                    <div class="app-icon-circle bg-red-100">
+                        <i class="fas fa-plus-circle text-red-500"></i>
+                    </div>
+                    <span class="app-icon-label">Post Gig</span>
+                </div>
+                <div class="app-icon" data-page="settings">
+                    <div class="app-icon-circle bg-gray-100">
+                        <i class="fas fa-cog text-gray-500"></i>
+                    </div>
+                    <span class="app-icon-label">Settings</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Profile Page -->
+        <div id="profile-page" class="page">
+            <div class="profile-picture-container">
+                <i class="fas fa-user"></i> <!-- User icon as per screenshot -->
+            </div>
+            <h3 class="username">Paul Lael</h3>
+
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <span class="stat-label">Total Hustles</span>
+                    <span class="stat-value">47</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Total Earnings</span>
+                    <span class="stat-value">$1,320</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Rating</span>
+                    <span class="stat-value star-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </span>
+                </div>
+            </div>
+
+            <button class="profile-button" data-nav-page="edit-profile">EDIT PROFILE</button>
+            <button class="profile-button" data-nav-page="payment-info">PAYMENT INFO</button>
+            <button class="profile-button" data-nav-page="my-hustles">MY HUSTLES</button>
+            <button class="profile-button" data-nav-page="settings">SETTINGS</button>
+            <!-- Removed Log out button as per new screenshot -->
+        </div>
+
+        <!-- Edit Profile Page -->
+        <div id="edit-profile-page" class="page">
+            <div class="sub-page-header">
+                <i class="fas fa-arrow-left back-button" data-back-to="profile-page"></i>
+                <span class="sub-page-header-title">Edit Profile</span>
+                <div></div> <!-- Placeholder for alignment -->
+            </div>
+            <div class="sub-page-content">
+                <div class="sub-page-section">
+                    <h3 class="sub-page-section-title"><i class="fas fa-user-edit"></i> Personal Information</h3>
+                    <p class="sub-page-text">Update your name, email, phone number, and bio.</p>
+                    <div class="sub-page-form-group">
+                        <label for="edit-name" class="sub-page-label">Full Name</label>
+                        <input type="text" id="edit-name" class="sub-page-input" value="Paul Lael">
+                    </div>
+                    <div class="sub-page-form-group">
+                        <label for="edit-email" class="sub-page-label">Email</label>
+                        <input type="email" id="edit-email" class="sub-page-input" value="paul.lael@example.com">
+                    </div>
+                    <div class="sub-page-form-group">
+                        <label for="edit-phone" class="sub-page-label">Phone Number</label>
+                        <input type="tel" id="edit-phone" class="sub-page-input" value="+1 (555) 123-4567">
+                    </div>
+                    <div class="sub-page-form-group">
+                        <label for="edit-bio" class="sub-page-label">Bio</label>
+                        <textarea id="edit-bio" class="sub-page-textarea" rows="4">Experienced hustler ready for any task!</textarea>
+                    </div>
+                </div>
+                <button class="sub-page-button">Save Changes</button>
+            </div>
+        </div>
+
+        <!-- Payment Info Page -->
+        <div id="payment-info-page" class="page">
+            <div class="sub-page-header">
+                <i class="fas fa-arrow-left back-button" data-back-to="profile-page"></i>
+                <span class="sub-page-header-title">Payment Information</span>
+                <div></div> <!-- Placeholder for alignment -->
+            </div>
+            <div class="sub-page-content">
+                <div class="sub-page-section">
+                    <h3 class="sub-page-section-title"><i class="fas fa-credit-card"></i> My Payment Methods</h3>
+                    <div class="payment-method-item">
+                        <i class="fas fa-university"></i>
+                        <span class="payment-method-details">Bank Account (**** 1234)</span>
+                    </div>
+                    <div class="payment-method-item">
+                        <i class="fas fa-cc-visa"></i>
+                        <span class="payment-method-details">Visa (**** 5678)</span>
+                    </div>
+                </div>
+                <button class="sub-page-button"><i class="fas fa-plus-circle mr-2"></i> Add New Method</button>
+            </div>
+        </div>
+
+        <!-- My Hustles Page -->
+        <div id="my-hustles-page" class="page">
+            <div class="sub-page-header">
+                <i class="fas fa-arrow-left back-button" data-back-to="profile-page"></i>
+                <span class="sub-page-header-title">My Hustles</span>
+                <div></div> <!-- Placeholder for alignment -->
+            </div>
+            <div class="sub-page-content">
+                <div class="sub-page-section">
+                    <h3 class="sub-page-section-title"><i class="fas fa-clipboard-check"></i> Completed Hustles</h3>
+                    <div class="my-hustle-item">
+                        <p class="my-hustle-title">Grocery Delivery</p>
+                        <p class="my-hustle-details">Completed: July 17, 2025 | Earned: $22.00</p>
+                    </div>
+                    <div class="my-hustle-item">
+                        <p class="my-hustle-title">Quick Survey</p>
+                        <p class="my-hustle-details">Completed: July 16, 2025 | Earned: $5.00</p>
+                    </div>
+                    <div class="my-hustle-item">
+                        <p class="my-hustle-title">Dog Walking</p>
+                        <p class="my-hustle-details">Completed: July 15, 2025 | Earned: $18.00</p>
+                    </div>
+                </div>
+                <div class="sub-page-section">
+                    <h3 class="sub-page-section-title"><i class="fas fa-hourglass-half"></i> Active Hustles</h3>
+                    <div class="flex flex-col items-center justify-center p-4 text-gray-500">
+                        <i class="fas fa-box-open text-4xl mb-2"></i>
+                        <p>No active hustles right now.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Search Page (Task Feed) -->
+        <div id="search-page" class="page">
+            <div class="search-header">
+                <div class="logo-container">
+                    <div class="logo-circle">
+                        <svg class="lightning-icon !w-6 !h-6" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M11.25 2.25L1.5 12.75H10.5L9.75 21.75L22.5 11.25H13.5L14.25 2.25H11.25Z" />
+                        </svg>
+                    </div>
+                    <span class="logo-text">Micro Hustle</span>
+                </div>
+                <div class="header-icons">
+                    <div class="profile-header-icon" id="header-profile-icon-search">
+                        <i class="fas fa-user-circle"></i>
+                    </div>
+                    <div class="notification-bell-container">
+                        <i class="fas fa-bell text-2xl text-gray-600"></i>
+                        <span class="notification-badge">3</span>
+                    </div>
+                </div>
+            </div>
+
+            <p class="welcome-message">👋 Welcome back, Paul!</p>
+
+            <div class="hustle-feed-section">
+                <h3 class="section-title"><i class="fas fa-lightbulb"></i> Personalized Hustle Feed</h3>
+                <div class="task-card" data-job-id="grocery-delivery">
+                    <div class="task-detail-line">
+                        <i class="fas fa-clock"></i> "You've got 1 hour free?"
+                    </div>
+                    <div class="task-detail-line">
+                        <i class="fas fa-shopping-basket"></i> Grocery delivery: <strong>$22</strong>
+                    </div>
+                    <div class="task-detail-line">
+                        <i class="fas fa-map-marker-alt"></i> 0.6 miles away
+                    </div>
+                    <button class="view-details-button">View Details</button>
+                </div>
+            </div>
+
+            <div class="hustle-feed-section">
+                <h3 class="section-title"><i class="fas fa-bolt"></i> Quick Task</h3>
+                <div class="task-card" data-job-id="quick-survey">
+                    <div class="task-detail-line">
+                        <i class="fas fa-clipboard"></i> Quick survey: <strong>$5 - 3 mins</strong>
+                    </div>
+                    <button class="view-details-button">View Details</button>
+                </div>
+            </div>
+
+            <div class="hustle-feed-section">
+                <h3 class="section-title"><i class="fas fa-paw"></i> Pet Care</h3>
+                <div class="task-card" data-job-id="dog-walking">
+                    <div class="task-detail-line">
+                        <i class="fas fa-dog"></i> Dog walking: <strong>$18 - 1.2 miles</strong>
+                    </div>
+                    <button class="view-details-button">View Details</button>
+                </div>
+            </div>
+
+            <div class="hustle-feed-section">
+                <h3 class="section-title"><i class="fas fa-wrench"></i> Home Repair</h3>
+                <div class="task-card" data-job-id="faucet-fix">
+                    <div class="task-detail-line">
+                        <i class="fas fa-hammer"></i> Fix leaky faucet: <strong>$50</strong>
+                    </div>
+                    <div class="task-detail-line">
+                        <i class="fas fa-map-marker-alt"></i> 2.1 miles away
+                    </div>
+                    <button class="view-details-button">View Details</button>
+                </div>
+            </div>
+
+            <div class="hustle-feed-section">
+                <h3 class="section-title"><i class="fas fa-laptop-code"></i> Tech Support</h3>
+                <div class="task-card" data-job-id="computer-setup">
+                    <div class="task-detail-line">
+                        <i class="fas fa-desktop"></i> Setup new computer: <strong>$75</strong>
+                    </div>
+                    <div class="task-detail-line">
+                        <i class="fas fa-map-marker-alt"></i> 0.9 miles away
+                    </div>
+                    <button class="view-details-button">View Details</button>
+                </div>
+            </div>
+
+            <div class="hustle-feed-section">
+                <h3 class="section-title"><i class="fas fa-car"></i> Errands</h3>
+                <div class="task-card" data-job-id="dry-cleaning">
+                    <div class="task-detail-line">
+                        <i class="fas fa-shipping-fast"></i> Pick up dry cleaning: <strong>$15</strong>
+                    </div>
+                    <div class="task-detail-line">
+                        <i class="fas fa-map-marker-alt"></i> 0.4 miles away
+                    </div>
+                    <button class="view-details-button">View Details</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Post a Gig Page -->
+        <div id="post-gig-page" class="page">
+            <div class="post-header">
+                <h2>Post a Gig</h2>
+            </div>
+
+            <div class="post-form-group">
+                <label for="gig-title" class="post-form-label">Title</label>
+                <input type="text" id="gig-title" class="post-form-input" placeholder="Gig title">
+            </div>
+
+            <div class="post-form-group">
+                <label for="gig-description" class="post-form-label">Description</label>
+                <textarea id="gig-description" class="post-form-textarea" placeholder="Describe your gig..."></textarea>
+            </div>
+
+            <button id="post-gig-submit-button" class="post-submit-button">Submit</button>
+            <div id="post-gig-message" class="post-message"></div>
+        </div>
+
+        <!-- Tasks Page -->
+        <div id="tasks-page" class="page">
+            <div class="tasks-header">
+                <h2>Tasks</h2>
+            </div>
+            <div class="flex flex-col items-center justify-center h-full">
+                <i class="fas fa-clipboard no-tasks-icon"></i>
+                <p class="no-tasks-message">No tasks</p>
+                <p class="no-tasks-subtext">You don't have any active tasks.</p>
+            </div>
+        </div>
+
+        <!-- Messages Page (Conversation List) -->
+        <div id="messages-page" class="page">
+            <div class="messages-header">
+                <h2>Messages</h2>
+            </div>
+            <div class="conversation-list">
+                <div class="conversation-item" data-chat-with="Alice Smith">
+                    <div class="conversation-avatar">
+                        <i class="fas fa-user-circle"></i>
+                    </div>
+                    <div class="conversation-content">
+                        <span class="conversation-name">Alice Smith</span>
+                        <span class="conversation-snippet">Hey, are you available for the grocery delivery today?</span>
+                    </div>
+                    <span class="conversation-timestamp">10:30 AM</span>
+                </div>
+                <div class="conversation-item" data-chat-with="Bob Johnson">
+                    <div class="conversation-avatar">
+                        <i class="fas fa-user-circle"></i>
+                    </div>
+                    <div class="conversation-content">
+                        <span class="conversation-name">Bob Johnson</span>
+                        <span class="conversation-snippet">Thanks for fixing my Wi-Fi! It's working great now.</span>
+                    </div>
+                    <span class="conversation-timestamp">Yesterday</span>
+                </div>
+                <div class="conversation-item" data-chat-with="Charlie Brown">
+                    <div class="conversation-avatar">
+                        <i class="fas fa-user-circle"></i>
+                    </div>
+                    <div class="conversation-content">
+                        <span class="conversation-name">Charlie Brown</span>
+                        <span class="conversation-snippet">Regarding the dog walking gig, can you do it at 5 PM?</span>
+                    </div>
+                    <span class="conversation-timestamp">July 15</span>
+                </div>
+                <div class="conversation-item" data-chat-with="Diana Prince">
+                    <div class="conversation-avatar">
+                        <i class="fas fa-user-circle"></i>
+                    </div>
+                    <div class="conversation-content">
+                        <span class="conversation-name">Diana Prince</span>
+                        <span class="conversation-snippet">I've posted a new task for cleaning my apartment.</span>
+                    </div>
+                    <span class="conversation-timestamp">July 14</span>
+                </div>
+                <div class="conversation-item" data-chat-with="Eve Adams">
+                    <div class="conversation-avatar">
+                        <i class="fas fa-user-circle"></i>
+                    </div>
+                    <div class="conversation-content">
+                        <span class="conversation-name">Eve Adams</span>
+                        <span class="conversation-snippet">Is the quick survey still available? I'm interested.</span>
+                    </div>
+                    <span class="conversation-timestamp">July 13</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Settings Page -->
+        <div id="settings-page" class="page">
+            <div class="settings-header sub-page-header">
+                <i class="fas fa-arrow-left back-button" data-back-to="profile-page"></i>
+                <h2>Settings</h2>
+                <div></div> <!-- Placeholder for alignment -->
+            </div>
+            <div class="settings-list">
+                <div class="settings-item" data-nav-page="account">
+                    <i class="fas fa-user-circle"></i>
+                    <span>Account</span>
+                    <i class="fas fa-chevron-right"></i>
+                </div>
+                <div class="settings-item" data-nav-page="notifications">
+                    <i class="fas fa-bell"></i>
+                    <span>Notifications</span>
+                    <i class="fas fa-chevron-right"></i>
+                </div>
+                <div class="settings-item" data-nav-page="privacy">
+                    <i class="fas fa-lock"></i>
+                    <span>Privacy</span>
+                    <i class="fas fa-chevron-right"></i>
+                </div>
+                <div class="settings-item" data-nav-page="help-support">
+                    <i class="fas fa-question-circle"></i>
+                    <span>Help & Support</span>
+                    <i class="fas fa-chevron-right"></i>
+                </div>
+                <div class="settings-item" data-nav-page="about-us">
+                    <i class="fas fa-info-circle"></i>
+                    <span>About Us</span>
+                    <i class="fas fa-chevron-right"></i>
+                </div>
+                <div class="settings-item" id="logout-settings-item">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Log Out</span>
+                    <i class="fas fa-chevron-right"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- New: Account Page (Settings Sub-page) -->
+        <div id="account-page" class="page">
+            <div class="sub-page-header">
+                <i class="fas fa-arrow-left back-button" data-back-to="settings-page"></i>
+                <span class="sub-page-header-title">Account Settings</span>
+                <div></div>
+            </div>
+            <div class="sub-page-content">
+                <div class="sub-page-section">
+                    <h3 class="sub-page-section-title"><i class="fas fa-user"></i> Profile Details</h3>
+                    <p class="sub-page-text">Manage your personal information, such as name, email, and password.</p>
+                    <button class="sub-page-button !bg-gray-700 hover:!bg-gray-900">Edit Profile</button>
+                </div>
+                <div class="sub-page-section">
+                    <h3 class="sub-page-section-title"><i class="fas fa-shield-alt"></i> Security</h3>
+                    <p class="sub-page-text">Change your password or set up two-factor authentication.</p>
+                    <button class="sub-page-button !bg-gray-700 hover:!bg-gray-900">Security Options</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- New: Notifications Page (Settings Sub-page) -->
+        <div id="notifications-page" class="page">
+            <div class="sub-page-header">
+                <i class="fas fa-arrow-left back-button" data-back-to="settings-page"></i>
+                <span class="sub-page-header-title">Notifications</span>
+                <div></div>
+            </div>
+            <div class="sub-page-content">
+                <div class="sub-page-section">
+                    <h3 class="sub-page-section-title"><i class="fas fa-bell"></i> Notification Preferences</h3>
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="sub-page-text">Email Notifications</span>
+                        <input type="checkbox" checked class="form-checkbox h-5 w-5 text-green-600 rounded">
+                    </div>
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="sub-page-text">Push Notifications</span>
+                        <input type="checkbox" checked class="form-checkbox h-5 w-5 text-green-600 rounded">
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="sub-page-text">SMS Alerts</span>
+                        <input type="checkbox" class="form-checkbox h-5 w-5 text-green-600 rounded">
+                    </div>
+                </div>
+                <button class="sub-page-button">Save Preferences</button>
+            </div>
+        </div>
+
+        <!-- New: Privacy Page (Settings Sub-page) -->
+        <div id="privacy-page" class="page">
+            <div class="sub-page-header">
+                <i class="fas fa-arrow-left back-button" data-back-to="settings-page"></i>
+                <span class="sub-page-header-title">Privacy Settings</span>
+                <div></div>
+            </div>
+            <div class="sub-page-content">
+                <div class="sub-page-section">
+                    <h3 class="sub-page-section-title"><i class="fas fa-lock"></i> Data Privacy</h3>
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="sub-page-text">Share Usage Data</span>
+                        <input type="checkbox" class="form-checkbox h-5 w-5 text-green-600 rounded">
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="sub-page-text">Personalized Ads</span>
+                        <input type="checkbox" checked class="form-checkbox h-5 w-5 text-green-600 rounded">
+                    </div>
+                </div>
+                <div class="sub-page-section">
+                    <h3 class="sub-page-section-title"><i class="fas fa-eye-slash"></i> Visibility</h3>
+                    <p class="sub-page-text">Control who can see your profile and activity.</p>
+                    <button class="sub-page-button !bg-gray-700 hover:!bg-gray-900">Manage Visibility</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- New: Help & Support Page (Settings Sub-page) -->
+        <div id="help-support-page" class="page">
+            <div class="sub-page-header">
+                <i class="fas fa-arrow-left back-button" data-back-to="settings-page"></i>
+                <span class="sub-page-header-title">Help & Support</span>
+                <div></div>
+            </div>
+            <div class="sub-page-content">
+                <div class="sub-page-section">
+                    <h3 class="sub-page-section-title"><i class="fas fa-question-circle"></i> FAQ</h3>
+                    <p class="sub-page-text">Find answers to common questions.</p>
+                    <button class="sub-page-button !bg-gray-700 hover:!bg-gray-900">View FAQ</button>
+                </div>
+                <div class="sub-page-section">
+                    <h3 class="sub-page-section-title"><i class="fas fa-envelope"></i> Contact Us</h3>
+                    <p class="sub-page-text">Reach out to our support team.</p>
+                    <button class="sub-page-button !bg-gray-700 hover:!bg-gray-900">Send Message</button>
+                </div>
+                <div class="sub-page-section">
+                    <h3 class="sub-page-section-title"><i class="fas fa-book"></i> User Guide</h3>
+                    <p class="sub-page-text">Access the full user manual.</p>
+                    <button class="sub-page-button !bg-gray-700 hover:!bg-gray-900">Read Guide</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- New: About Us Page (Settings Sub-page) -->
+        <div id="about-us-page" class="page">
+            <div class="sub-page-header">
+                <i class="fas fa-arrow-left back-button" data-back-to="settings-page"></i>
+                <span class="sub-page-header-title">About Us</span>
+                <div></div>
+            </div>
+            <div class="sub-page-content">
+                <div class="sub-page-section">
+                    <h3 class="sub-page-section-title"><i class="fas fa-building"></i> Our Mission</h3>
+                    <p class="sub-page-text">
+                        At Micro Hustle, our mission is to empower individuals to find flexible,
+                        short-term gigs that fit their schedule and skills, while also helping
+                        local communities connect with reliable talent for their everyday needs.
+                    </p>
+                </div>
+                <div class="sub-page-section">
+                    <h3 class="sub-page-section-title"><i class="fas fa-users"></i> Our Team</h3>
+                    <p class="sub-page-text">
+                        We are a passionate team dedicated to creating a seamless and efficient platform
+                        for micro-tasking. We believe in the power of community and the value of every hustle.
+                    </p>
+                </div>
+                <div class="sub-page-section">
+                    <h3 class="sub-page-section-title"><i class="fas fa-history"></i> Our Story</h3>
+                    <p class="sub-page-text">
+                        Micro Hustle was founded in 2024 with the vision of making side gigs accessible
+                        to everyone, from students to retirees. We started small, but our community
+                        has grown rapidly, connecting thousands of hustlers with opportunities.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Wallet Page -->
+        <div id="wallet-page" class="page">
+            <div class="wallet-header">
+                <h2>Wallet</h2>
+            </div>
+            <div class="balance-card">
+                <p class="balance-label">Current Balance</p>
+                <p class="balance-amount">$1,320.00</p>
+            </div>
+            <div class="wallet-actions">
+                <button class="wallet-button">
+                    <i class="fas fa-plus-circle"></i>
+                    <span>Add Funds</span>
+                </button>
+                <button class="wallet-button">
+                    <i class="fas fa-exchange-alt"></i>
+                    <span>Withdraw</span>
+                </button>
+            </div>
+            <h3 class="transaction-history-title">Transaction History</h3>
+            <div class="transaction-item">
+                <div class="transaction-details">
+                    <span class="transaction-name">Grocery Delivery (Paid)</span>
+                    <span class="transaction-date">July 17, 2025</span>
+                </div>
+                <span class="transaction-amount">+$22.00</span>
+            </div>
+            <div class="transaction-item">
+                <div class="transaction-details">
+                    <span class="transaction-name">Quick Survey (Paid)</span>
+                    <span class="transaction-date">July 16, 2025</span>
+                </div>
+                <span class="transaction-amount">+$5.00</span>
+            </div>
+            <div class="transaction-item">
+                <div class="transaction-details">
+                    <span class="transaction-name">Subscription Fee</span>
+                    <span class="transaction-date">July 15, 2025</span>
+                </div>
+                <span class="transaction-amount negative">-$10.00</span>
+            </div>
+        </div>
+
+        <!-- Chat Detail Page -->
+        <div id="chat-detail-page" class="page">
+            <div class="chat-header">
+                <i class="fas fa-arrow-left back-button" id="chat-back-button"></i>
+                <div class="chat-header-info">
+                    <span class="chat-header-name">Nicole</span>
+                    <span class="chat-header-status">Online now</span>
+                </div>
+                <i class="fas fa-user-circle profile-icon"></i>
+            </div>
+            <div class="chat-area">
+                <div class="message-bubble incoming-message">
+                    Hi there! I hope you're having a good day 😊
+                </div>
+                <div class="message-bubble outgoing-message">
+                    Absolutely! I've already completed two quick gigs this morning
+                </div>
+                <div class="message-bubble incoming-message">
+                    That's great! By the way, there's a survey available if you'd like to do another
+                </div>
+                <div class="message-bubble outgoing-message">
+                    Sounds perfect. I'll get started on it shortly
+                </div>
+                <div class="chat-timestamp-group">
+                    Yesterday 2:20PM
+                </div>
+                <div class="message-bubble incoming-message">
+                    Perfect, thank you!
+                </div>
+            </div>
+            <div class="chat-input-container">
+                <input type="text" class="chat-input" placeholder="Message">
+                <button class="send-button">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Job Detail Page -->
+        <div id="job-detail-page" class="page">
+            <div class="job-detail-header">
+                <i class="fas fa-arrow-left back-button" id="job-detail-back-button"></i>
+                <div class="job-detail-header-info">
+                    <span class="job-detail-header-title" id="job-detail-title">Job Title</span>
+                </div>
+                <i class="fas fa-user-circle profile-icon"></i>
+            </div>
+            <div class="job-detail-content">
+                <div class="job-detail-section">
+                    <h3 class="job-detail-section-title"><i class="fas fa-info-circle"></i> Description</h3>
+                    <p class="job-detail-text" id="job-detail-description">
+                        This is a detailed description of the job. It will include all the necessary information
+                        that a hustler needs to know before accepting the task. This could be specific instructions,
+                        required tools, or any other relevant details.
+                    </p>
+                </div>
+                <div class="job-detail-section">
+                    <h3 class="job-detail-section-title"><i class="fas fa-map-marker-alt"></i> Location</h3>
+                    <p class="job-detail-text" id="job-detail-location">
+                        123 Main Street, Anytown, USA (0.6 miles away)
+                    </p>
+                    <!-- Placeholder for the map -->
+                    <img src="https://placehold.co/400x150/e0e0e0/555555?text=Map+Placeholder" alt="Map of job location" class="job-detail-map">
+                </div>
+                <div class="job-detail-section">
+                    <h3 class="job-detail-section-title"><i class="fas fa-dollar-sign"></i> Payment</h3>
+                    <p class="job-detail-price" id="job-detail-payment">$22.00</p>
+                </div>
+            </div>
+            <div class="start-job-button-container">
+                <button class="start-job-button">Start Job Now</button>
+            </div>
+        </div>
+
+
+        <!-- Bottom Navigation Bar (fixed) -->
+        <div class="footer-nav hidden" id="footer-nav">
+            <div class="nav-item active" data-page="home">
+                <i class="fas fa-home"></i>
+                <span>Home</span>
+            </div>
+            <div class="nav-item" data-page="search">
+                <i class="fas fa-search"></i>
+                <span>Explore</span>
+            </div>
+            <div class="nav-item" data-page="post-gig">
+                <i class="fas fa-plus-circle"></i>
+                <span>Post</span>
+            </div>
+            <div class="nav-item" data-page="messages">
+                <i class="fas fa-envelope"></i>
+                <span>Inbox</span>
+            </div>
+            <div class="nav-item" data-page="profile">
+                <i class="fas fa-user"></i>
+                <span>Profile</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const loginButton = document.getElementById('login-button');
+            const pages = document.querySelectorAll('.page');
+            const navItems = document.querySelectorAll('.nav-item');
+            const appIcons = document.querySelectorAll('.app-icon');
+            const footerNav = document.getElementById('footer-nav');
+            const headerProfileIcon = document.getElementById('header-profile-icon');
+            const headerProfileIconSearch = document.getElementById('header-profile-icon-search');
+            const chatBackButtons = document.querySelectorAll('#chat-back-button');
+            const jobDetailBackButtons = document.querySelectorAll('#job-detail-back-button');
+            const subPageBackButtons = document.querySelectorAll('.sub-page-header .back-button');
+
+            // Post Gig elements
+            const postGigSubmitButton = document.getElementById('post-gig-submit-button');
+            const gigTitleInput = document.getElementById('gig-title');
+            const gigDescriptionTextarea = document.getElementById('gig-description');
+            const postGigMessage = document.getElementById('post-gig-message');
+
+            // Settings page items
+            const settingsItems = document.querySelectorAll('#settings-page .settings-item');
+            const logoutSettingsItem = document.getElementById('logout-settings-item');
+
+
+            // Dummy job data for demonstration
+            const jobData = {
+                "grocery-delivery": {
+                    title: "Grocery Delivery",
+                    description: "Pick up groceries from 'Fresh Market' and deliver to customer's address. List of items will be provided upon acceptance. Requires a car.",
+                    location: "123 Main Street, Anytown, USA (0.6 miles away)",
+                    payment: "$22.00"
+                },
+                "quick-survey": {
+                    title: "Quick Survey",
+                    description: "Complete a 3-minute online survey about consumer preferences. No specific skills required, just honest opinions.",
+                    location: "Online",
+                    payment: "$5.00"
+                },
+                "dog-walking": {
+                    title: "Dog Walking",
+                    description: "Walk a friendly golden retriever for 30 minutes in the local park. Poop bags provided. Must be comfortable with dogs.",
+                    location: "Park Ave, Anytown, USA (1.2 miles away)",
+                    payment: "$18.00"
+                },
+                "faucet-fix": {
+                    title: "Fix Leaky Faucet",
+                    description: "Repair a leaky kitchen faucet. Basic plumbing knowledge and tools are required. Parts will be reimbursed.",
+                    location: "456 Oak Avenue, Anytown, USA (2.1 miles away)",
+                    payment: "$50.00"
+                },
+                "computer-setup": {
+                    title: "Setup New Computer",
+                    description: "Help set up a new desktop computer, including connecting peripherals, installing basic software, and ensuring internet connectivity.",
+                    location: "789 Pine Lane, Anytown, USA (0.9 miles away)",
+                    payment: "$75.00"
+                },
+                "dry-cleaning": {
+                    title: "Pick up Dry Cleaning",
+                    description: "Pick up dry cleaning from 'Sparkle Cleaners' and drop off at customer's home. Small, light load.",
+                    location: "101 Maple Drive, Anytown, USA (0.4 miles away)",
+                    payment: "$15.00"
+                }
+            };
+
+
+            // Function to show a specific page
+            function showPage(pageId) {
+                pages.forEach(page => {
+                    page.classList.remove('active');
+                });
+                document.getElementById(pageId).classList.add('active');
+
+                // Toggle visibility of the footer navigation
+                // Footer nav should be hidden on login page, chat detail page, job detail page, and all profile sub-pages
+                if (pageId === 'login-page' || pageId === 'chat-detail-page' || pageId === 'job-detail-page' ||
+                    pageId === 'edit-profile-page' || pageId === 'payment-info-page' || pageId === 'my-hustles-page' ||
+                    pageId === 'settings-page' || pageId === 'account-page' || pageId === 'notifications-page' ||
+                    pageId === 'privacy-page' || pageId === 'help-support-page' || pageId === 'about-us-page') { // Added about-us-page
+                    footerNav.classList.add('hidden');
+                } else {
+                    footerNav.classList.remove('hidden');
+                }
+
+                // Update active state of bottom navigation
+                navItems.forEach(item => {
+                    item.classList.remove('active');
+                    // Only activate nav item if it's a main navigation page
+                    if (['home', 'search', 'post-gig', 'messages', 'profile'].includes(item.dataset.page) &&
+                        item.dataset.page === pageId.replace('-page', '')) {
+                        item.classList.add('active');
+                    }
+                });
+            }
+
+            // Initial page load: show login page and hide nav
+            showPage('login-page');
+
+            // Login button functionality (demo mode: any input works)
+            loginButton.addEventListener('click', (e) => {
+                e.preventDefault();
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
+
+                if (email && password) {
+                    showPage('home-page');
+                } else {
+                    showPage('home-page');
+                }
+            });
+
+            // Bottom navigation click handlers
+            navItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    const targetPage = item.dataset.page;
+                    if (targetPage === 'home') {
+                        showPage('home-page');
+                    } else if (targetPage === 'search') {
+                        showPage('search-page');
+                    } else if (targetPage === 'post-gig') {
+                        showPage('post-gig-page');
+                    } else if (targetPage === 'messages') {
+                        showPage('messages-page');
+                    } else if (targetPage === 'profile') {
+                        showPage('profile-page');
+                    }
+                });
+            });
+
+            // App icon click handlers on home page
+            appIcons.forEach(icon => {
+                icon.addEventListener('click', () => {
+                    const targetPage = icon.dataset.page;
+                    if (targetPage === 'profile') {
+                        showPage('profile-page');
+                    } else if (targetPage === 'create-task') {
+                        showPage('post-gig-page');
+                    } else if (targetPage === 'tasks') {
+                        showPage('tasks-page');
+                    } else if (targetPage === 'wallet') {
+                        showPage('wallet-page');
+                    } else if (targetPage === 'messages') {
+                        showPage('messages-page');
+                    } else if (targetPage === 'settings') {
+                        showPage('settings-page');
+                    }
+                });
+            });
+
+            // Profile page button click handlers
+            const profileButtons = document.querySelectorAll('#profile-page .profile-button');
+            profileButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const targetPage = button.dataset.navPage;
+                    if (targetPage) {
+                        showPage(targetPage + '-page'); // Append '-page' to match div IDs
+                    }
+                });
+            });
+
+
+            // Conversation item click handler on Messages page
+            const conversationItems = document.querySelectorAll('.conversation-item');
+            conversationItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    showPage('chat-detail-page');
+                });
+            });
+
+            // Chat detail page back button handler
+            chatBackButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    showPage('messages-page');
+                });
+            });
+
+            // "View Details" button click handler on Search page
+            const viewDetailsButtons = document.querySelectorAll('.view-details-button');
+            viewDetailsButtons.forEach(button => {
+                button.addEventListener('click', (event) => {
+                    const taskId = event.target.closest('.task-card').dataset.jobId;
+                    const selectedJob = jobData[taskId];
+
+                    if (selectedJob) {
+                        document.getElementById('job-detail-title').textContent = selectedJob.title;
+                        document.getElementById('job-detail-description').textContent = selectedJob.description;
+                        document.getElementById('job-detail-location').textContent = selectedJob.location;
+                        document.getElementById('job-detail-payment').textContent = selectedJob.payment;
+                        showPage('job-detail-page');
+                    } else {
+                        console.error('Job data not found for ID:', taskId);
+                    }
+                });
+            });
+
+            // Job detail page back button handler
+            jobDetailBackButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    showPage('search-page');
+                });
+            });
+
+            // Generic sub-page back button handlers (for all sub-pages including settings sub-pages)
+            subPageBackButtons.forEach(button => {
+                button.addEventListener('click', (event) => {
+                    const backToPageId = event.target.dataset.backTo;
+                    if (backToPageId) {
+                        showPage(backToPageId);
+                    }
+                });
+            });
+
+            // Header profile icon click handler for Home page
+            if (headerProfileIcon) {
+                headerProfileIcon.addEventListener('click', () => {
+                    showPage('profile-page');
+                });
+            }
+
+            // Header profile icon click handler for Search page
+            if (headerProfileIconSearch) {
+                headerProfileIconSearch.addEventListener('click', () => {
+                    showPage('profile-page');
+                });
+            }
+
+            // Post Gig Submit Button functionality
+            postGigSubmitButton.addEventListener('click', () => {
+                const title = gigTitleInput.value.trim();
+                const description = gigDescriptionTextarea.value.trim();
+
+                if (title && description) {
+                    // Simulate successful submission
+                    postGigMessage.textContent = 'Gig posted successfully!';
+                    postGigMessage.classList.remove('error');
+                    postGigMessage.classList.add('success', 'active'); // Show message
+                    console.log('New Gig Posted:');
+                    console.log('Title:', title);
+                    console.log('Description:', description);
+
+                    // Clear fields
+                    gigTitleInput.value = '';
+                    gigDescriptionTextarea.value = '';
+
+                    // Optionally, navigate to another page after a short delay
+                    setTimeout(() => {
+                        postGigMessage.classList.remove('active'); // Hide message
+                        showPage('search-page'); // Go to explore/search page
+                    }, 2000); // Hide message and navigate after 2 seconds
+                } else {
+                    // Show error message if fields are empty
+                    postGigMessage.textContent = 'Please fill in both title and description.';
+                    postGigMessage.classList.remove('success');
+                    postGigMessage.classList.add('error', 'active'); // Show message
+                    setTimeout(() => {
+                        postGigMessage.classList.remove('active'); // Hide message after 3 seconds
+                    }, 3000);
+                }
+            });
+
+            // Settings page item click handlers
+            settingsItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    const targetPage = item.dataset.navPage;
+                    if (targetPage) {
+                        showPage(targetPage + '-page');
+                    }
+                });
+            });
+
+            // Logout functionality on Settings page
+            logoutSettingsItem.addEventListener('click', () => {
+                // Simulate logout
+                console.log('User logged out.');
+                // Clear any session data (if applicable in a real app)
+                document.getElementById('email').value = '';
+                document.getElementById('password').value = '';
+                showPage('login-page');
+            });
+        });
+    </script>
+</body>
+</html>
