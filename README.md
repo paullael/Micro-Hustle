@@ -25,6 +25,9 @@ Here's a walkthrough of implemented features:
 
 <img src='https://imgur.com/gallery/test-g04v7IG#0zMxnZq' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
+![Micro-Hustle](./MicroHustleWalkthrough.gif)
+
+
 ## Notes and Comments
 
 Describe any challenges encountered while building this project.
