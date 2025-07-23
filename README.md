@@ -23,14 +23,13 @@ Here's a mockup and design of the project:
 
 Here's a walkthrough of implemented features:
 
-<img src='https://imgur.com/gallery/test-g04v7IG#0zMxnZq' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
 ![Micro-Hustle](./MicroHustleWalkthrough.gif)
 
 
 ## Notes and Comments
 
-Describe any challenges encountered while building this project.
-
+The different challenges i've encounter while building the website were building the different options on the homepage, added the different gigs on the task page
+make the conversation page, create a profile and wallet page and make every options functionable.
 
 
